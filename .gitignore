@@ -138,3 +138,6 @@ checkpoints
 
 # backup
 backup
+
+# lib
+lib/
