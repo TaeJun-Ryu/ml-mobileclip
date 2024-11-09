@@ -135,9 +135,9 @@ def evaluate_webdataset(
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Webdataset evaluation script.")
-    parser = parse_args(parser)
-    args = parser.parse_args()
+    # parser = argparse.ArgumentParser(description="Webdataset evaluation script.")
+    # parser = parse_args(parser)
+    # args = parser.parse_args()
 
     task_list = [
         'vtab/caltech101',
@@ -188,18 +188,22 @@ if __name__ == "__main__":
 
     slack.send_message(f"[MobileClip-v2] Process Start")
 
+    model_arch = 'mobileclip_s0'
+    model_path = 'checkpoints/mobileclip_s0.pt'
+
     for task in task_list:
         try:
             slack.send_message(f"[MobileClip-v2] {task} Start")
             metric = evaluate_webdataset(
-                task=task, model_arch=args.model_arch, model_path=args.model_path
+                # task=task, model_arch=args.model_arch, model_path=args.model_path
+                task=task, model_arch=model_arch, model_path=model_path
             )
             result = {"key":task, "metrics":metric}
 
             slack.send_message(f"[MobileClip-v2] {task} End | Eval Metrics: {metric}")
             print(f"{task} Eval Metrics: {metric}")
 
-            with open(f"results_v2/{args.model_arch}_v1.jsonl", "a") as outfile:
+            with open(f"results_v2/{model_arch}_v1.jsonl", "a") as outfile:
                 outfile.write(f"{result}\n")
         except:
             traceback_message = traceback.format_exc()
